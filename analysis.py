@@ -127,6 +127,7 @@ vcd = VCD()
  def vcd_enddefinitions(tokeniser, keyword):
    vcd.enddefinitions = True
    drop_declaration(tokeniser, keyword)
+   
  def vcd_scope(tokeniser, keyword):
    vcd.scope.append( tuple(takewhile(lambda x: x != "$end", tokeniser)))
  def vcd_upscope(tokeniser, keyword):
