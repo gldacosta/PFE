@@ -430,6 +430,7 @@ for line in changes_parser_output:
 debut=start
 fin=start+delta
 ts=0
+
 for i in range(fin):
 	if temps[i]>=debut and temps[i]<=fin:
 		ts+=1
