@@ -11,6 +11,8 @@ with open("./data.vcd","r") as file:
     changes = 0
     clock = 0
 
+    output = []
+    lines = 0
     for count,token in enumerate(tokeniser):
         if not enddefinitions:
        # definition section
@@ -28,10 +30,13 @@ with open("./data.vcd","r") as file:
             
             if c == '#' and rest.isdigit(): # its a clock period
                 new_clock = int(rest)
-                if new_clock - clock >= 1260:
-                    print(f"From {clock} to {new_clock} there were {changes} changes")
+                if new_clock - clock >= 1260: # checks for a whole period (1260)
+                    print(f"From {clock} to {new_clock} there were {changes} changes to vectors and {lines} other changes")
+                    output.append((clock, changes + lines))
                     changes = 0
+                    lines = 0
                     clock = new_clock
+
                 
             elif c == 'b':
                 # here we know it is a binary vector
@@ -49,3 +54,14 @@ with open("./data.vcd","r") as file:
                         variables[var] = vector
                     else:
                         variables[var] = vector
+            else:
+                lines += 1
+            
+
+
+file = open('output_parser', 'w')
+for element in output:
+    # Creates output file with the format timestamp,changes
+    file.write(str(element[0]) + ","  + str(element[1]) + "\n")
+
+file.close()

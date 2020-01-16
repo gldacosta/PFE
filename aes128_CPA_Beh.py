@@ -418,40 +418,14 @@ y_ct_int, y_ct_int2 , y_pt_int = ciphertext(y_ct, y_ct2)
 
 print 'step 2/4 : VCD file processing'
 
-vcd=open("./infiles/aes128_AS.vcd","r")
+changes_parser_output = open("output_parser","r")
 
-line=[]
-for ligne in vcd:
-    line.append(ligne.split())
-vcd.close()
-temps=[]
-ligne=[]
-a=0
-b=0
-temps.append('#0')
-for i in range(len(line)):
-    if line[i]==[]:
-        i+=1
-    if line[i]==[]:
-        i+=1
-    if line[i][0][0]=='#':
-        temps.append(line[i][0])
-        ligne.append(i)
-    if line[i]==['$dumpvars']:
-        a=i
-    if line[i]==['$end']:
-        b=i
-
-print ("	#signals %d" % (b-a-1))
-
-for i in range(len(temps)):
-    temps[i]=temps[i].replace("#","")
-    temps[i]=int(temps[i].replace("'",""))
-
-commut=[]
-commut.append(0)
-for i in range(len(ligne)-1):
-    commut.append(abs(ligne[i]-ligne[i+1])-1)
+temps = []
+changes = []
+for line in changes_parser_output:
+    elements = line.split(",")
+    temps.append(int(elements[0]))
+    changes.append(int(elements[1]))
 
 debut=start
 fin=start+delta
@@ -476,7 +450,7 @@ for i in range(NB_PLAINTEXT):
 	for j in range(len(temps)-1):
 		if temps[j]>=debut and temps[j]<=fin:
 			if a%2==0:
-				toggle[i,b]=float(commut[j])
+				toggle[i,b]=float(chages[j])
 				b+=1
 			a+=1
  
